@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 function Footer() {
   return (
-    <footer className="relative mt-10 border-t border-purple-500/20 bg-purple-900 backdrop-blur-md">
+    <footer className="relative mt-10 border-t border-purple-500/20 bg-purple-900 backdrop-blur-md ">
       {/* Glow Effect */}
       <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-72 h-72 bg-purple-600/10 blur-3xl rounded-full" />
 

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import {  useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../validators/auth.validation-schema";
@@ -9,6 +9,10 @@ import { setUser } from "../redux/slices/authSlice";
 
 export default function Login() {
   const dispatch = useDispatch();
+  const location  = useLocation()
+  const navigate = useNavigate();
+
+const from = location.state?.from?.pathname || '/'
 
   // const [apiError, setApiError] = useState(null);
   const {
@@ -27,14 +31,13 @@ export default function Login() {
       // console.log(user);
       dispatch(setUser(user.data));
       reset();
-      navigate("/");
+      navigate(from, {replace:true})
     } catch (error) {
       console.log(error);
       // setApiError(error.message);
     }
   };
 
-  const navigate = useNavigate();
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-900 via-purple-900 to-black px-4">
       <div className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl p-8 text-white">

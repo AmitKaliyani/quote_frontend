@@ -66,7 +66,7 @@ function Navbar() {
             {isAuthenticated && (
               <div className="hidden md:flex items-center gap-8">
                 <Link
-                  to="/"
+                  to="/my-quotes"
               className={`flex items-center gap-2  hover:text-purple-400 transition-all duration-300 ${isActive("") ? "text-purple-400" : "text-slate-300"}`}
 
                 >
@@ -97,7 +97,7 @@ function Navbar() {
               </button>
 
               <Link
-                to=""
+                to="/profile"
                 className="px-2 py-2 rounded-full border-2  border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white transition-all duration-300"
               >
                 <FaUser />
@@ -158,7 +158,7 @@ function Navbar() {
 
           {isAuthenticated && (
             <Link
-              to="/"
+              to="/my-quotes"
               onClick={closeMenu}
               className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-purple-600/20 hover:text-purple-400 transition-all duration-300"
             >
@@ -188,7 +188,7 @@ function Navbar() {
               </button>
 
               <Link
-                to="/signup"
+                to="/profile"
                 onClick={closeMenu}
                 className=" flex justify-center py-3 rounded-xl bg-linear-to-r from-purple-600 to-violet-500 text-white font-medium shadow-lg shadow-purple-500/20 hover:scale-[1.02] transition-all duration-300"
               >

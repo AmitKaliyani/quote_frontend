@@ -13,13 +13,12 @@ function QuoteCard({ quote }) {
                  rounded-3xl p-6 md:p-8 
                  shadow-xl overflow-hidden"
     >
-      
       {/* Glow effect on hover */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-linear-to-r cursor-pointer from-purple-600/10 to-pink-600/10" />
 
       {/* Quote Text */}
       <p className="text-lg md:text-xl text-shadow-taupe-800 italic leading-relaxed relative z-10">
-        “{quote.content || "Your thoughts shape your reality."}”
+        “{quote.text || "Your thoughts shape your reality."}”
       </p>
 
       {/* Author */}
@@ -28,28 +27,33 @@ function QuoteCard({ quote }) {
       </p>
 
       {/* Actions */}
-      <div className="mt-6 flex items-center justify-between relative z-10">
-
+      <div className="mt-6  flex items-center justify-between relative z-10">
         {/* Left tags */}
-        <span className="text-xs text-slate-400 px-3 py-1 rounded-full border border-purple-500/20">
-          Inspirational
-        </span>
+        <div className="flex w-60 flex-wrap gap-1">
+          {quote.tags.map((q,i) => (
+            <span key={i} className="text-xs w-auto   text-slate-400 px-3 py-1 rounded-full border border-purple-500/20">
+              
+              {q}
+            </span>
+          ))}
+        </div>
 
         {/* Right icons */}
         <div className="flex items-center gap-4 text-slate-400">
-
           <button className="hover:text-pink-500 transition">
             <FaHeart />
+           <p className="text-xs">{quote.likeCount} </p> 
           </button>
 
           <button className="hover:text-purple-400 transition">
             <FaBookmark />
+           <p className="text-xs">{quote.likeCount} </p> 
           </button>
 
           <button className="hover:text-green-400 transition">
             <FaShare />
+           <p className="text-xs">{quote.likeCount} </p> 
           </button>
-
         </div>
       </div>
 

@@ -54,7 +54,9 @@ function TrendingQuote() {
   return (
     <section className=" mt-10 py-20 bg-linear-to-r from-purple-200 via-pink-200 to-violet-100 rounded-2xl  px-6 mb-3 max-w-7xl mx-auto">
       {isLoading ? (
-      <Spinner />
+        <div className="flex items-center justify-center h-[20vh]">
+            <Spinner />
+          </div>
       ) : (
         <>
           <motion.h2

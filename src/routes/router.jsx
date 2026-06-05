@@ -9,6 +9,9 @@ import {
   createRoutesFromElements,
   Route,
 } from "react-router";
+import { UserProtectedRoute } from "./protected.route";
+import GetMyQoutes from "../pages/GetMyQoutes";
+import Profile from "../pages/Profile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,7 +23,11 @@ const router = createBrowserRouter(
    <Route path="/" element={<MainLayout />}>
       <Route index element={<Home />} />  
       <Route path="/quotes" element={<Quotes />} />   
-      <Route path="/about" element={<About />} />   
+      <Route path="/about" element={<About />} />  
+      <Route  element={<UserProtectedRoute />}>
+        <Route path="/my-quotes" element={<GetMyQoutes />}/>
+        <Route path="/profile" element={<Profile />} />
+      </Route> 
    </Route>
     </>
 ),
