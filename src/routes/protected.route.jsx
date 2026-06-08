@@ -1,21 +1,16 @@
-import { useSelector } from "react-redux"
-import { Navigate, Outlet } from "react-router"
+import { useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router";
 
-export function UserProtectedRoute(){
-    
-    
+export function UserProtectedRoute() {
+  const user = useSelector((state) => state.auth.user);
 
-    const user = useSelector((state) => state.auth.user)  
-    console.log(user);
-    
+  if (!user) {
+    return (
+      <Navigate to={"/login"} state={{ from: location.pathname }} replace />
+    );
+  }
 
-    if(!user){
-     return <Navigate to={'/login'}  state={{from:location.pathname}} replace />
-    }
-
-    return <Outlet />
+  return <Outlet />;
 }
 
-export function AdminProtectedRoute(){
-
-}
+export function AdminProtectedRoute() {}

@@ -3,7 +3,6 @@ import authReducer from "./slices/authSlice";
 
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-console.log(storage);
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -11,14 +10,18 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key: "root",
-  storage:storage.default,
+  storage: storage.default,
   whitelist: ["auth"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
- reducer: persistedReducer,
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export const persistor = persistStore(store);
