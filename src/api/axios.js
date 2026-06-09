@@ -47,10 +47,10 @@ axiosInstance.interceptors.response.use(
                 await axiosInstance.post('/auth/refresh')
                 proceessQueue(null) 
                 return axiosInstance(originalRequest)
-            } catch (refreshError) {
+                } catch (refreshError) {
                 proceessQueue(refreshError)
                 console.log("Refresh Token Expired : ",refreshError);
-                window.location.href('/login')
+                window.location.href = '/login'
 
                 return Promise.reject(refreshError)
             }finally{

@@ -16,6 +16,17 @@ export const getMyQuotes = async (filters) => {
   return response.data;
 };
 
+export const getQuoteById = async (id) => {
+  const response = await axiosInstance.get(`/quotes/${id}`);
+  return response.data;
+};
+export const getQuoteByAuthor = async (submittedBy) => {
+  const response = await axiosInstance.get(`/quotes`, {
+    params: { submittedBy },
+  });
+  return response.data;
+};
+
 export const createQuote = async (data) => {
   const response = await axiosInstance.post("/quotes", data);
   return response.data;
@@ -29,5 +40,10 @@ export const deleteQuote = async (id) => {
 export const updateQuote = async (id, data) => {
   const response = await axiosInstance.patch(`/quotes/${id}`, data);
 
+  return response.data;
+};
+
+export const toggleLike = async (quoteId) => {
+  const response = await axiosInstance.post(`/quotes/${quoteId}/like`);
   return response.data;
 };

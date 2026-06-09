@@ -3,7 +3,7 @@ import { z } from "zod";
 export const createQuotesSchema = z.object({
   text: z
     .string()
-    .min(50, "minimum 20 character required")
+    .min(20, "minimum 20 character required")
     .max(250, "Maximum 250 character allowed "),
   tags: z
     .array(z.string())

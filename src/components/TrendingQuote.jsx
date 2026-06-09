@@ -55,8 +55,8 @@ function TrendingQuote() {
     <section className=" mt-10 py-20 bg-linear-to-r from-purple-200 via-pink-200 to-violet-100 rounded-2xl  px-6 mb-3 max-w-7xl mx-auto">
       {isLoading ? (
         <div className="flex items-center justify-center h-[20vh]">
-            <Spinner />
-          </div>
+          <Spinner />
+        </div>
       ) : (
         <>
           <motion.h2
@@ -82,9 +82,7 @@ function TrendingQuote() {
                 <p className=" italic text-lg">"{quote.text}"</p>
 
                 <div className="mt-4 flex justify-between items-center">
-                  <span className="text-purple-400">
-                    — {quote.attributedTo}
-                  </span>
+                  <span className="text-purple-400">— {quote.author}</span>
 
                   <span className="text-pink-400 text-sm">
                     ❤️ {quote.likeCount}

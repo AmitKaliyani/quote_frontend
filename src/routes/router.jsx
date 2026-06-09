@@ -11,26 +11,27 @@ import {
 } from "react-router";
 import { UserProtectedRoute } from "./protected.route";
 import GetMyQoutes from "../pages/GetMyQoutes";
-import Profile from "../pages/Profile";
+import ProfilePage from "../pages/ProfilePage";
+import QuotePage from "../pages/QuotePage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-    <Route path="/signup" element={<SignUp />} />
-    <Route path="/login" element={<Login />} />
- 
- 
-   <Route path="/" element={<MainLayout />}>
-      <Route index element={<Home />} />  
-      <Route path="/quotes" element={<Quotes />} />   
-      <Route path="/about" element={<About />} />  
-      <Route  element={<UserProtectedRoute />}>
-        <Route path="/my-quotes" element={<GetMyQoutes />}/>
-        <Route path="/profile" element={<Profile />} />
-      </Route> 
-   </Route>
-    </>
-),
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/login" element={<Login />} />
+
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<Home />} />
+        <Route path="/quotes" element={<Quotes />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/quotes/:id" element={<QuotePage />} />
+        <Route element={<UserProtectedRoute />}>
+          <Route path="/my-quotes" element={<GetMyQoutes />} />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Route>
+      </Route>
+    </>,
+  ),
 );
 
 export default router;

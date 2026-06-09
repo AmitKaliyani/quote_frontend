@@ -1,9 +1,50 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { FaHeart, FaBookmark, FaShare } from "react-icons/fa";
+import { toggleLike } from "../../api/quote.api";
+import { useNavigate } from "react-router";
 
 function QuoteCard({ quote }) {
+  const [isLiked, setIsLiked] = useState(quote?.isLiked || false);
+  const [likeCount, setLikeCount] = useState(quote?.likeCount || 0);
+
+  const [isSaved, setIsSaved] = useState(quote?.isSaved || false);
+
+  const navigate = useNavigate();
+
+  // Navigate handler (safe)
+  const handleNavigate = () => {
+    navigate(`/quotes/${quote?._id}`);
+  };
+
+  const handleLikeToggle = async (e, quoteId) => {
+    e.stopPropagation(); // FIXED spelling
+
+    const prevLiked = isLiked;
+    const prevCount = likeCount;
+
+    const newLiked = !prevLiked;
+
+    // optimistic UI update
+    setIsLiked(newLiked);
+    setLikeCount((p) => (newLiked ? p + 1 : p - 1));
+
+    try {
+      await toggleLike(quoteId);
+    } catch (err) {
+      console.log(err);
+
+      // rollback on failure
+      setIsLiked(prevLiked);
+      setLikeCount(prevCount);
+    }
+  };
+
+  const handleSave = () => {};
+
   return (
     <motion.div
+      onClick={handleNavigate}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.03 }}
@@ -11,10 +52,10 @@ function QuoteCard({ quote }) {
       className="relative group bg-white/5 backdrop-blur-xl 
                  border border-purple-500/20 
                  rounded-3xl p-6 md:p-8 
-                 shadow-xl overflow-hidden"
+                 shadow-xl overflow-hidden cursor-pointer"
     >
-      {/* Glow effect on hover */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-linear-to-r cursor-pointer from-purple-600/10 to-pink-600/10" />
+      {/* Glow effect */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-linear-to-r from-purple-600/10 to-pink-600/10" />
 
       {/* Quote Text */}
       <p className="text-lg md:text-xl text-shadow-taupe-800 italic leading-relaxed relative z-10">
@@ -27,37 +68,52 @@ function QuoteCard({ quote }) {
       </p>
 
       {/* Actions */}
-      <div className="mt-6  flex items-center justify-between relative z-10">
-        {/* Left tags */}
+      <div className="mt-6 flex items-center justify-between relative z-10">
+        {/* Tags */}
         <div className="flex w-60 flex-wrap gap-1">
-          {quote.tags.map((q,i) => (
-            <span key={i} className="text-xs w-auto   text-slate-400 px-3 py-1 rounded-full border border-purple-500/20">
-              
-              {q}
+          {quote.tags?.map((tag, i) => (
+            <span
+              key={i}
+              className="text-xs text-slate-400 px-3 py-1 rounded-full border border-purple-500/20"
+            >
+              {tag}
             </span>
           ))}
         </div>
 
-        {/* Right icons */}
+        {/* Actions */}
         <div className="flex items-center gap-4 text-slate-400">
-          <button className="hover:text-pink-500 transition">
-            <FaHeart />
-           <p className="text-xs">{quote.likeCount} </p> 
+          {/* Like Button */}
+          <button
+            onClick={(e) => handleLikeToggle(e, quote._id)}
+            className="flex flex-col items-center"
+          >
+            <FaHeart
+              className={`transition ${
+                isLiked ? "text-pink-500" : "text-gray-500"
+              }`}
+            />
+            <p className="text-xs">{likeCount}</p>
           </button>
 
-          <button className="hover:text-purple-400 transition">
+          {/* Bookmark */}
+          <button className="flex flex-col items-center hover:text-purple-400 transition">
             <FaBookmark />
-           <p className="text-xs">{quote.likeCount} </p> 
+            <p className="text-xs">0</p>
           </button>
 
-          <button className="hover:text-green-400 transition">
+          {/* Share */}
+          <button
+            onClick={handleSave}
+            className="flex flex-col items-center hover:text-green-400 transition"
+          >
             <FaShare />
-           <p className="text-xs">{quote.likeCount} </p> 
+            <p className="text-xs">0</p>
           </button>
         </div>
       </div>
 
-      {/* Floating decoration */}
+      {/* Decoration */}
       <div className="absolute -top-10 -right-10 w-32 h-32 bg-purple-600/10 rounded-full blur-3xl" />
     </motion.div>
   );

@@ -13,12 +13,14 @@ import { useSelector } from "react-redux";
 import { logoutUser } from "../../api/auth.api";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/slices/authSlice";
+import Profile from "../Profile";
 
 function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const [openProfile, setOpenProfile] = useState(false);
 
   const isActive = (path) => location.pathname === path;
 
@@ -30,6 +32,9 @@ function Navbar() {
     navigate("/login");
   };
 
+  const handleProfile = () => {
+    setOpenProfile((prev) => !prev);
+  };
   return (
     <nav className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-purple-500/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -67,8 +72,7 @@ function Navbar() {
               <div className="hidden md:flex items-center gap-8">
                 <Link
                   to="/my-quotes"
-              className={`flex items-center gap-2  hover:text-purple-400 transition-all duration-300 ${isActive("") ? "text-purple-400" : "text-slate-300"}`}
-
+                  className={`flex items-center gap-2  hover:text-purple-400 transition-all duration-300 ${isActive("") ? "text-purple-400" : "text-slate-300"}`}
                 >
                   <FaAnchor />
                   <span>Get My Quotes</span>
@@ -79,7 +83,6 @@ function Navbar() {
             <Link
               to="/about"
               className={`flex items-center gap-2  hover:text-purple-400 transition-all duration-300 ${isActive("/about") ? "text-purple-400" : "text-slate-300"}`}
-             
             >
               <FaInfoCircle />
               <span>About</span>
@@ -90,18 +93,11 @@ function Navbar() {
           {isAuthenticated ? (
             <div className="hidden md:flex items-center gap-3">
               <button
-                onClick={handleLogout}
-                className="px-4 py-1 rounded-lg border border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white transition-all duration-300"
-              >
-                Logout
-              </button>
-
-              <Link
-                to="/profile"
+                onClick={handleProfile}
                 className="px-2 py-2 rounded-full border-2  border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white transition-all duration-300"
               >
                 <FaUser />
-              </Link>
+              </button>
             </div>
           ) : (
             <div className="hidden md:flex items-center gap-3">
@@ -180,20 +176,14 @@ function Navbar() {
           {isAuthenticated ? (
             <div className="flex flex-col gap-3">
               <button
-                onClick={handleLogout}
-                onClick={closeMenu}
-                className="text-center py-3 rounded-xl border border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white transition-all duration-300"
-              >
-                Logout
-              </button>
-
-              <Link
-                to="/profile"
-                onClick={closeMenu}
+                onClick={() => {
+                  handleProfile();
+                  closeMenu();
+                }}
                 className=" flex justify-center py-3 rounded-xl bg-linear-to-r from-purple-600 to-violet-500 text-white font-medium shadow-lg shadow-purple-500/20 hover:scale-[1.02] transition-all duration-300"
               >
                 <FaUser />
-              </Link>
+              </button>
             </div>
           ) : (
             <div className="flex flex-col gap-3">
@@ -216,6 +206,12 @@ function Navbar() {
           )}
         </div>
       </div>
+
+      <Profile
+        open={openProfile}
+        handleLogout={handleLogout}
+        setOpen={setOpenProfile}
+      />
     </nav>
   );
 }
