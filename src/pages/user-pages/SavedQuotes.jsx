@@ -1,7 +1,7 @@
-import QuotesList from "../components/QuoteList";
+import QuotesList from "../../components/QuoteList";
 import { useState } from "react";
-import { getMySavedQuote } from "../api/quote.api";
-import Spinner from "../components/common-component/Spinner";
+import { getMySavedQuote } from "../../api/quote.api";
+import Spinner from "../../components/common-component/Spinner";
 import { useEffect } from "react";
 // import { useSearchParams } from "react-router";
 

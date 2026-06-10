@@ -1,11 +1,11 @@
 import { useState } from "react";
-import QuoteTable from "../components/common-component/Quotetable";
+import QuoteTable from "../../components/common-component/Quotetable";
 import { useEffect } from "react";
-import { deleteQuote, getMyQuotes } from "../api/quote.api";
-import Spinner from "../components/common-component/Spinner";
+import { deleteQuote, getMyQuotes } from "../../api/quote.api";
+import Spinner from "../../components/common-component/Spinner";
 import { useSearchParams } from "react-router";
-import CreateQuoteModals from "../components/modals/CreateQuoteModal";
-import DeleteModal from "../components/modals/DeleteModal";
+import CreateQuoteModals from "../../components/modals/CreateQuoteModal";
+import DeleteModal from "../../components/modals/DeleteModal";
 import toast from "react-hot-toast";
 
 function GetMyQoutes() {

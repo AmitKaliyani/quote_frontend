@@ -1,56 +1,51 @@
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signupSchema } from "../validators/auth.validation-schema";
-import { signupUser } from "../api/auth.api";
+import { loginSchema } from "../../validators/auth.validation-schema";
+import { loginUser } from "../../api/auth.api";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/authSlice";
 
-export default function SignUp() {
+export default function Login() {
+  const dispatch = useDispatch();
+  const location = useLocation();
   const navigate = useNavigate();
 
-  // const [seenPassword,setSeenPassword] = useState(true)
-  // const [apiError, setApiError] = useState("");
+  const from = location.state?.from?.pathname || "/";
+
+  // const [apiError, setApiError] = useState(null);
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm({ resolver: zodResolver(signupSchema) });
+  } = useForm({ resolver: zodResolver(loginSchema) });
 
   const onSubmit = async (data) => {
+    console.log(data);
+
     try {
-      // setApiError("");
-      await signupUser(data);
+      // api call
+      const user = await loginUser(data);
+      // console.log(user);
+      dispatch(setUser(user.data));
       reset();
-      navigate("/login");
+      navigate(from, { replace: true });
     } catch (error) {
       console.log(error);
-
-      // setApiError(error?.response?.data?.message);
+      // setApiError(error.message);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-900 via-purple-900 to-black px-4">
       <div className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl p-8 text-white">
-        <h2 className="text-3xl font-bold text-center mb-2">
-          Create Account 🚀
-        </h2>
+        <h2 className="text-3xl font-bold text-center mb-2">Welcome Back 👋</h2>
         <p className="text-center text-sm text-gray-300 mb-6">
-          Signup and start exploring
+          Login to continue your journey
         </p>
 
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label className="text-sm text-gray-300">Name</label>
-            <input
-              type="text"
-              placeholder="Enter your name"
-              {...register("name")}
-              className="w-full mt-1 p-3 rounded-lg bg-white/10 border border-white/20 outline-none focus:ring-2 focus:ring-purple-500"
-            />
-            <p className="text-red-400 text-sm">{errors.name?.message}</p>
-          </div>
-
           <div>
             <label className="text-sm text-gray-300">Email</label>
             <input
@@ -65,14 +60,14 @@ export default function SignUp() {
           <div>
             <label className="text-sm text-gray-300">Password</label>
             <input
-              // type={seenPassword ? "password": "text"}
               type="password"
               placeholder="Enter your password"
               {...register("password")}
               className="w-full mt-1 p-3 rounded-lg bg-white/10 border border-white/20 outline-none focus:ring-2 focus:ring-purple-500"
             />
-            <p className="text-red-400 text-sm">{errors.pasword?.message}</p>
+            <p className="text-red-400 text-sm">{errors.password?.message}</p>
           </div>
+
           <button
             type="submit"
             disabled={isSubmitting}
@@ -81,17 +76,18 @@ export default function SignUp() {
             {isSubmitting ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
             ) : (
-              "SignUp"
+              "Login"
             )}
           </button>
         </form>
+
         <p className="text-center text-sm text-gray-300 mt-6">
-          Already have an account?
+          Don't have an account?
           <button
             className="text-purple-400 hover:underline font-medium"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/signup")}
           >
-            Login
+            Signup
           </button>
         </p>
       </div>

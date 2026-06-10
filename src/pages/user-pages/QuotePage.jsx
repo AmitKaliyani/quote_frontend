@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { FaHeart, FaBookmark, FaShare } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { getQuoteByAuthor, getQuoteById } from "../api/quote.api";
-import QuotesList from "../components/QuoteList";
+import { getQuoteByAuthor, getQuoteById } from "../../api/quote.api";
+import QuotesList from "../../components/QuoteList";
 
 function QuotePage() {
   const { id } = useParams();

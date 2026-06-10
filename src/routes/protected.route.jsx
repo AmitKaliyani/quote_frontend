@@ -12,5 +12,3 @@ export function UserProtectedRoute() {
 
   return <Outlet />;
 }
-
-export function AdminProtectedRoute() {}

@@ -1,27 +1,26 @@
-import SearchBar from "../components/common-component/SearchBar";
-import Filter from "../components/common-component/Filter";
-import QuotesList from "../components/QuoteList";
+import SearchBar from "../../components/common-component/SearchBar.jsx";
+import Filter from "../../components/common-component/Filter.jsx";
+import QuotesList from "../../components/QuoteList.jsx";
 import { useState } from "react";
-import { getAllQuotes } from "../api/quote.api";
-import Spinner from "../components/common-component/Spinner";
+import { getAllQuotes } from "../../api/quote.api.js";
+import Spinner from "../../components/common-component/Spinner.jsx";
 import { useEffect } from "react";
-import { TAGS } from "../constants/tags.js";
+import { TAGS } from "../../constants/tags.js";
 import { useSearchParams } from "react-router";
 
 function Quotes() {
   const [quotes, setQuotes] = useState([]);
   const [isLoading, setIsLoding] = useState(false);
   const [error, setIsError] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams(); 
-
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const tags = searchParams.get("tags") || "";
   const selectedTag = searchParams.get("tags") || "ALL";
-  const search = searchParams.get("search") || ""
+  const search = searchParams.get("search") || "";
 
   const filters = {
     ...(tags && { tags }),
-    ...(search && {search})
+    ...(search && { search }),
   };
 
   const fetchAllQuotes = async (filters) => {
@@ -38,7 +37,7 @@ function Quotes() {
 
   useEffect(() => {
     fetchAllQuotes(filters);
-  }, [tags,search]);
+  }, [tags, search]);
 
   if (error) {
     return <p className="text-red-500 text-center">{error}</p>;
@@ -59,11 +58,10 @@ function Quotes() {
             selectedTag={selectedTag}
           />
 
-          <SearchBar 
-           searchParams={searchParams}
+          <SearchBar
+            searchParams={searchParams}
             setSearchParams={setSearchParams}
             search={search}
-          
           />
         </div>
         {isLoading ? (
