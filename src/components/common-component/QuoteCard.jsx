@@ -1,13 +1,15 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { FaHeart, FaBookmark, FaShare } from "react-icons/fa";
-import { toggleLike } from "../../api/quote.api";
+import { toggleLike, toggleSaved } from "../../api/quote.api";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
-function QuoteCard({ quote }) {
+function QuoteCard({ quote, onUnsave }) {
   const [isLiked, setIsLiked] = useState(quote?.isLiked || false);
   const [likeCount, setLikeCount] = useState(quote?.likeCount || 0);
-
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [isSaved, setIsSaved] = useState(quote?.isSaved || false);
 
   const navigate = useNavigate();
@@ -19,7 +21,10 @@ function QuoteCard({ quote }) {
 
   const handleLikeToggle = async (e, quoteId) => {
     e.stopPropagation(); // FIXED spelling
-
+    if (!isAuthenticated) {
+      toast.error("LoggedIn first for like quotes");
+      return;
+    }
     const prevLiked = isLiked;
     const prevCount = likeCount;
 
@@ -40,7 +45,26 @@ function QuoteCard({ quote }) {
     }
   };
 
-  const handleSave = () => {};
+  const handleSave = async (e, quoteId) => {
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      toast.error("LoggedIn first for save quotes");
+    }
+
+    const prevSaved = isSaved;
+    const newSaved = !prevSaved;
+    try {
+      setIsSaved(newSaved);
+
+      await toggleSaved(quoteId);
+      if (!newSaved && typeof onUnsave === "function") {
+        onUnsave(quoteId);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsSaved(prevSaved);
+    }
+  };
 
   return (
     <motion.div
@@ -82,14 +106,14 @@ function QuoteCard({ quote }) {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-4 text-slate-400">
+        <div className="flex items-center gap-4 text-slate-400 ">
           {/* Like Button */}
           <button
-            onClick={(e) => handleLikeToggle(e, quote._id)}
+            onClick={(e) => handleLikeToggle(e, quote?._id)}
             className="flex flex-col items-center"
           >
             <FaHeart
-              className={`transition ${
+              className={`transition cursor-pointer ${
                 isLiked ? "text-pink-500" : "text-gray-500"
               }`}
             />
@@ -97,16 +121,18 @@ function QuoteCard({ quote }) {
           </button>
 
           {/* Bookmark */}
-          <button className="flex flex-col items-center hover:text-purple-400 transition">
-            <FaBookmark />
-            <p className="text-xs">0</p>
+          <button
+            onClick={(e) => handleSave(e, quote?._id)}
+            className="flex flex-col mb-3 items-center hover:text-purple-400 transition"
+          >
+            <FaBookmark
+              className={`cursor-pointer ${isSaved ? "text-yellow-500" : "text-gray-400"}`}
+            />
+            <p className="text-xs"></p>
           </button>
 
           {/* Share */}
-          <button
-            onClick={handleSave}
-            className="flex flex-col items-center hover:text-green-400 transition"
-          >
+          <button className="flex flex-col items-center hover:text-green-400 transition">
             <FaShare />
             <p className="text-xs">0</p>
           </button>

@@ -13,6 +13,7 @@ import { UserProtectedRoute } from "./protected.route";
 import GetMyQoutes from "../pages/GetMyQoutes";
 import ProfilePage from "../pages/ProfilePage";
 import QuotePage from "../pages/QuotePage";
+import SavedQuotes from "../pages/SavedQuotes";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
         <Route element={<UserProtectedRoute />}>
           <Route path="/my-quotes" element={<GetMyQoutes />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/saved-quotes" element={<SavedQuotes />} />
         </Route>
       </Route>
     </>,

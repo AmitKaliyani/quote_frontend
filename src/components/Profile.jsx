@@ -1,8 +1,10 @@
 import { useEffect, useRef } from "react";
-import { FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { FaUser, FaCog, FaSignOutAlt, FaBookmark } from "react-icons/fa";
+import { useNavigate } from "react-router";
 
 export default function Profile({ open, handleLogout, setOpen }) {
   const ref = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -29,6 +31,17 @@ export default function Profile({ open, handleLogout, setOpen }) {
           </button>
 
           {/* Settings */}
+          <button
+            onClick={() => {
+              navigate("/saved-quotes");
+              setOpen(false);
+            }}
+            className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition cursor-pointer"
+          >
+            <FaBookmark className="text-gray-500" />
+            Saved Quotes
+          </button>
+
           <button className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition cursor-pointer">
             <FaCog className="text-gray-500" />
             Settings

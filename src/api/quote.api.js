@@ -16,6 +16,11 @@ export const getMyQuotes = async (filters) => {
   return response.data;
 };
 
+export const getMySavedQuote = async () => {
+  const response = await axiosInstance.get("/quotes/saved");
+  return response.data;
+};
+
 export const getQuoteById = async (id) => {
   const response = await axiosInstance.get(`/quotes/${id}`);
   return response.data;
@@ -45,5 +50,10 @@ export const updateQuote = async (id, data) => {
 
 export const toggleLike = async (quoteId) => {
   const response = await axiosInstance.post(`/quotes/${quoteId}/like`);
+  return response.data;
+};
+
+export const toggleSaved = async (id) => {
+  const response = await axiosInstance.post(`/quotes/${id}/save`);
   return response.data;
 };

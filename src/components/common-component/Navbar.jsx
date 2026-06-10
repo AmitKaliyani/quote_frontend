@@ -94,7 +94,7 @@ function Navbar() {
             <div className="hidden md:flex items-center gap-3">
               <button
                 onClick={handleProfile}
-                className="px-2 py-2 rounded-full border-2  border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white transition-all duration-300"
+                className="px-2 py-2 rounded-full border-2  border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white transition-all duration-300 cursor-pointer"
               >
                 <FaUser />
               </button>
@@ -174,7 +174,7 @@ function Navbar() {
           <div className="border-t border-slate-700 my-3"></div>
 
           {isAuthenticated ? (
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 ">
               <button
                 onClick={() => {
                   handleProfile();
@@ -182,7 +182,7 @@ function Navbar() {
                 }}
                 className=" flex justify-center py-3 rounded-xl bg-linear-to-r from-purple-600 to-violet-500 text-white font-medium shadow-lg shadow-purple-500/20 hover:scale-[1.02] transition-all duration-300"
               >
-                <FaUser />
+                <FaUser className="cursor-pointer" />
               </button>
             </div>
           ) : (

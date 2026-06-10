@@ -13,7 +13,7 @@ function QuotePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (id) => {
       try {
         setLoading(true);
 
@@ -23,16 +23,16 @@ function QuotePage() {
 
         const authorRes = await getQuoteByAuthor(res?.data?.submittedBy?._id);
         console.log(authorRes);
-
-        setAuthorQuotes(authorRes.data.quotes || []);
+        const filteredQuote = authorRes.data.quotes.filter((q) => q._id !== id);
+        setAuthorQuotes(filteredQuote || []);
+        setLoading(false);
       } catch (err) {
         console.log(err);
-      } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchData(id);
   }, [id]);
 
   if (loading) {
@@ -70,7 +70,9 @@ function QuotePage() {
           </button>
 
           <button className="flex flex-col items-center ">
-            <FaBookmark />
+            <FaBookmark
+              className={`${quote?.isSaved ? "text-yellow-500" : "text-gray-400"}`}
+            />
             <span className="text-xs mt-1">Save</span>
           </button>
 
