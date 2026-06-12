@@ -12,26 +12,26 @@ function QuotePage() {
   const [authorQuotes, setAuthorQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchData = async (id) => {
+    try {
+      setLoading(true);
+
+      const res = await getQuoteById(id);
+      setQuote(res.data);
+      console.log(res.data);
+
+      const authorRes = await getQuoteByAuthor(res?.data?.submittedBy?._id);
+      console.log(authorRes);
+      const filteredQuote = authorRes.data.quotes.filter((q) => q._id !== id);
+      setAuthorQuotes(filteredQuote || []);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async (id) => {
-      try {
-        setLoading(true);
-
-        const res = await getQuoteById(id);
-        setQuote(res.data);
-        console.log(res.data);
-
-        const authorRes = await getQuoteByAuthor(res?.data?.submittedBy?._id);
-        console.log(authorRes);
-        const filteredQuote = authorRes.data.quotes.filter((q) => q._id !== id);
-        setAuthorQuotes(filteredQuote || []);
-        setLoading(false);
-      } catch (err) {
-        console.log(err);
-        setLoading(false);
-      }
-    };
-
     fetchData(id);
   }, [id]);
 
@@ -104,17 +104,6 @@ function QuotePage() {
         </h2>
 
         <div className="">
-          {/* {authorQuotes.map((q) => (
-            <div
-              key={q._id}
-              className="p-4 bg-white/5 border border-purple-500/10 rounded-xl hover:bg-white/10 transition"
-            >
-              <p className="text-gray-200">“{q.text}”</p>
-              <span className="text-xs text-gray-400">
-                ❤️ {q.likeCount || 0}
-              </span>
-            </div>
-          ))} */}
           <QuotesList quotes={authorQuotes} />
         </div>
       </div>

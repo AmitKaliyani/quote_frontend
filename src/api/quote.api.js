@@ -8,7 +8,7 @@ export const getTrendingQuote = async () => {
 export const getAllQuotes = async (filters) => {
   const response = await axiosInstance.get("/quotes", { params: filters });
 
-  return response.data;
+  return response.data?.data;
 };
 
 export const getMyQuotes = async (filters) => {

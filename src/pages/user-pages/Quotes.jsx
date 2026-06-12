@@ -1,47 +1,88 @@
 import SearchBar from "../../components/common-component/SearchBar.jsx";
 import Filter from "../../components/common-component/Filter.jsx";
 import QuotesList from "../../components/QuoteList.jsx";
-import { useState } from "react";
 import { getAllQuotes } from "../../api/quote.api.js";
 import Spinner from "../../components/common-component/Spinner.jsx";
-import { useEffect } from "react";
 import { TAGS } from "../../constants/tags.js";
 import { useSearchParams } from "react-router";
+import { useEffect } from "react";
+import { useRef } from "react";
+import useSWRInfinite from "swr/infinite";
 
 function Quotes() {
-  const [quotes, setQuotes] = useState([]);
-  const [isLoading, setIsLoding] = useState(false);
-  const [error, setIsError] = useState("");
+  // const [quotes, setQuotes] = useState([]);
+  // const [isLoading, setIsLoding] = useState(false);
+  // const [error, setIsError] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
+  // const [page, setPage] = useState(1);
 
   const tags = searchParams.get("tags") || "";
   const selectedTag = searchParams.get("tags") || "ALL";
   const search = searchParams.get("search") || "";
 
-  const filters = {
-    ...(tags && { tags }),
-    ...(search && { search }),
+  // const filters = {
+  //   ...(tags && { tags }),
+  //   ...(search && { search }),
+  // };
+
+  const getKey = (pageIndex, previousPageData) => {
+    if (
+      previousPageData &&
+      previousPageData.pagination.page >= previousPageData.pagination.totalPages
+    ) {
+      return null;
+    }
+
+    return ["quotes", pageIndex + 1, tags, search];
   };
 
-  const fetchAllQuotes = async (filters) => {
-    try {
-      setIsLoding(true);
-      const response = await getAllQuotes(filters);
-      setQuotes(response.data);
-      setIsLoding(false);
-    } catch (error) {
-      console.log(error);
-      setIsError(error.message);
-    }
-  };
+  const { data, error, isLoading, size, setSize, isValidating } =
+    useSWRInfinite(getKey, ([, page, tags, search]) =>
+      getAllQuotes({ page, tags, search }),
+    );
+
+  const quotes = data?.flatMap((page) => page?.quotes) || [];
+  console.log(quotes);
+
+  const lastPage = data?.[data.length - 1];
+  const hasMore =
+    lastPage && lastPage?.pagination?.page < lastPage?.pagination?.totalPages;
+
+  // InterSection observer
+
+  const loaderRef = useRef(null);
 
   useEffect(() => {
-    fetchAllQuotes(filters);
-  }, [tags, search]);
+    if (!loaderRef.current || !hasMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isValidating) {
+          setSize((prev) => prev + 1);
+        }
+      },
+      {
+        threshold: 0.5,
+      },
+    );
+
+    observer.observe(loaderRef.current);
+
+    return () => observer.disconnect();
+  }, [hasMore, isValidating, setSize]);
 
   if (error) {
-    return <p className="text-red-500 text-center">{error}</p>;
+    return <p className="text-red-500 text-center">{error.message}</p>;
   }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[65vh]">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <div className="py-10 px-4 md:px-10  ">
       <div className="max-w-7xl min-h-screen mx-auto ">
@@ -69,9 +110,14 @@ function Quotes() {
             <Spinner />
           </div>
         ) : (
-          <QuotesList quotes={quotes.quotes || []} />
+          <QuotesList quotes={quotes || []} />
         )}
       </div>
+      {hasMore && (
+        <div ref={loaderRef} className="flex justify-center py-8">
+          <Spinner />
+        </div>
+      )}
     </div>
   );
 }

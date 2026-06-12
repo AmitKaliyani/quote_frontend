@@ -2,18 +2,18 @@ import { FaSearch } from "react-icons/fa";
 
 function SearchBar({ search, setSearchParams }) {
   const handleSearchParams = (e) => {
-    const value = e.target.value; 
-     setSearchParams((prev) => {
-      const params = new URLSearchParams(prev) 
+    const value = e.target.value;
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
 
-      if(value){
-        params.set("search",value)
-      }else{
-        params.delete("search")
+      if (value) {
+        params.set("search", value);
+      } else {
+        params.delete("search");
       }
 
-      return params
-     })
+      return params;
+    });
   };
   return (
     <>

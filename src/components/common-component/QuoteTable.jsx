@@ -33,7 +33,7 @@ function QuoteTable({
               >
                 {/* Quote */}
                 <td className="px-6 py-4 max-w-md">
-                  <p className="text-gray-800 text-sm line-clamp-2">
+                  <p className="text-gray-800 text-sm line-clamp-2 ">
                     {quote.text}
                   </p>
                 </td>
