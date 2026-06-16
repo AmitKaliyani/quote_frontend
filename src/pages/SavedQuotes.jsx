@@ -17,7 +17,7 @@ function SavedQuotes() {
     mutate,
   } = useSWR("saved-quotes", getMySavedQuote);
 
-  console.log(quotes, error, isLoading);
+  // console.log(quotes, error, isLoading);
 
   const onUnsave = (id) => {
     mutate(

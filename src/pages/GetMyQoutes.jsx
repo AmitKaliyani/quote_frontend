@@ -44,7 +44,7 @@ function GetMyQoutes() {
 
   const handleDeleteClick = (data) => {
     try {
-      console.log(data);
+      // console.log(data);
       setIsDeleteModalOpen(true);
       setQuoteId(data._id);
     } catch (error) {
@@ -54,7 +54,7 @@ function GetMyQoutes() {
 
   const handleEditClick = (data) => {
     try {
-      console.log(data);
+      // console.log(data);
       setIsOpen(true);
       setQuote(data);
       // setIsEdited(true);
@@ -70,8 +70,8 @@ function GetMyQoutes() {
       toast.success("Quote deleted successfully");
       setIsDeleteModalOpen(false);
     } catch (error) {
-      toast.error("Quote not found");
-      console.log(error);
+      toast.error(error?.response?.data?.message);
+      // console.log(error);
     }
   };
 

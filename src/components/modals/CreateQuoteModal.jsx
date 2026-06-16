@@ -27,7 +27,7 @@ function CreateQuoteModals({ isOpen, setIsOpen, quote, setQuote }) {
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
+      // console.log(data);
       quote ? await updateQuote(quote._id, data) : await createQuote(data);
       toast.success(`Quote ${quote ? "updated" : "created"} succesfully}`);
       setQuote(null);
@@ -35,6 +35,7 @@ function CreateQuoteModals({ isOpen, setIsOpen, quote, setQuote }) {
       reset();
     } catch (error) {
       console.log(error);
+      toast.error(error?.response?.data?.message);
     }
   };
 

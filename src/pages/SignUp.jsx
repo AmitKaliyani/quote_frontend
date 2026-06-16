@@ -24,7 +24,7 @@ export default function SignUp() {
       reset();
       navigate("/login");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
 
       setApiError(error?.response?.data?.message);
     }
