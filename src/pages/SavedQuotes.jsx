@@ -17,6 +17,8 @@ function SavedQuotes() {
     mutate,
   } = useSWR("saved-quotes", getMySavedQuote);
 
+  console.log(error);
+
   // console.log(quotes, error, isLoading);
 
   const onUnsave = (id) => {
@@ -30,7 +32,11 @@ function SavedQuotes() {
   };
 
   if (error) {
-    return <p className="text-red-500 text-center">{error}</p>;
+    return (
+      <p className="text-red-500 text-center">
+        {error?.response?.data?.message}
+      </p>
+    );
   }
   return (
     <div className="py-10 px-4 md:px-10  ">

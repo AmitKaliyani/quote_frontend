@@ -17,8 +17,13 @@ export const getMyQuotes = async (filters) => {
 };
 
 export const getMySavedQuote = async () => {
-  const response = await axiosInstance.get("/quotes/saved");
-  return response.data;
+  try {
+    const response = await axiosInstance.get("/quotes/saved");
+    return response.data;
+  } catch (error) {
+    // return Promise.reject(error);
+    console.log(error?.response);
+  }
 };
 
 export const getQuoteById = async (id) => {
