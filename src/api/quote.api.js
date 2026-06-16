@@ -23,7 +23,7 @@ export const getMySavedQuote = async () => {
 
 export const getQuoteById = async (id) => {
   const response = await axiosInstance.get(`/quotes/${id}`);
-  return response.data;
+  return response.data.data;
 };
 export const getQuoteByAuthor = async (submittedBy) => {
   const response = await axiosInstance.get(`/quotes`, {
