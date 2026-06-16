@@ -11,8 +11,8 @@ function QuotesList({ quotes, onUnsave }) {
   }
   return (
     <div className="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {quotes.map((q) => (
-        <QuoteCard quote={q} onUnsave={onUnsave} key={q._id} />
+      {quotes.map((q, i) => (
+        <QuoteCard quote={q} onUnsave={onUnsave} key={i + 1} />
       ))}
     </div>
   );

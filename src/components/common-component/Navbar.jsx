@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
 import { useState } from "react";
 import {
   FaBars,
@@ -21,6 +21,7 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const [openProfile, setOpenProfile] = useState(false);
+  const location = useLocation();
 
   const isActive = (path) => location.pathname === path;
 
@@ -72,7 +73,7 @@ function Navbar() {
               <div className="hidden md:flex items-center gap-8">
                 <Link
                   to="/my-quotes"
-                  className={`flex items-center gap-2  hover:text-purple-400 transition-all duration-300 ${isActive("") ? "text-purple-400" : "text-slate-300"}`}
+                  className={`flex items-center gap-2  hover:text-purple-400 transition-all duration-300 ${isActive("/my-quotes") ? "text-purple-400" : "text-slate-300"}`}
                 >
                   <FaAnchor />
                   <span>Get My Quotes</span>
