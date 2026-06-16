@@ -1,22 +1,18 @@
 import { useState } from "react";
-import QuoteTable from "../../components/common-component/Quotetable";
-import { useEffect } from "react";
-import { deleteQuote, getMyQuotes } from "../../api/quote.api";
-import Spinner from "../../components/common-component/Spinner";
+import QuoteTable from "../components/common-component/Quotetable";
+import { deleteQuote, getMyQuotes } from "../api/quote.api";
+import Spinner from "../components/common-component/Spinner";
 import { useSearchParams } from "react-router";
-import CreateQuoteModals from "../../components/modals/CreateQuoteModal";
-import DeleteModal from "../../components/modals/DeleteModal";
+import CreateQuoteModals from "../components/modals/CreateQuoteModal";
+import DeleteModal from "../components/modals/DeleteModal";
 import toast from "react-hot-toast";
+import useSWR from "swr";
 
 function GetMyQoutes() {
   const [isOpen, setIsOpen] = useState(false);
   const [deleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [quoteId, setQuoteId] = useState(null);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [quotes, setQuotes] = useState([]);
   const [params, setParams] = useSearchParams();
-  // const [isEdited, setIsEdited] = useState(false);
   const [quote, setQuote] = useState(null);
 
   const page = Number(params.get("page")) || 1;
@@ -41,20 +37,10 @@ function GetMyQoutes() {
     });
   };
 
-  // console.log(handleLimitChange);
-
-  const fetchMyQuotes = async (filters) => {
-    try {
-      setIsLoading(true);
-      const response = await getMyQuotes(filters);
-      // console.log(response);
-
-      setQuotes(response);
-      setIsLoading(false);
-    } catch (error) {
-      setError(error.message);
-    }
-  };
+  const { data, error, isLoading, mutate } = useSWR(
+    ["all-quotes", page, limit],
+    () => getMyQuotes(filters),
+  );
 
   const handleDeleteClick = (data) => {
     try {
@@ -80,10 +66,7 @@ function GetMyQoutes() {
   const handleDeleteQuote = async () => {
     try {
       await deleteQuote(quoteId);
-      setQuotes((prev) => ({
-        ...prev,
-        data: prev.data.filter((q) => q._id !== quoteId),
-      }));
+      await mutate();
       toast.success("Quote deleted successfully");
       setIsDeleteModalOpen(false);
     } catch (error) {
@@ -92,14 +75,10 @@ function GetMyQoutes() {
     }
   };
 
-  useEffect(() => {
-    fetchMyQuotes(filters);
-  }, [page, limit]);
-
   if (error) {
     return (
       <p className="min-h-screen flex justify-center items-center text-red-600 text-lg ">
-        {error}
+        {error?.response?.data?.message}
       </p>
     );
   }
@@ -123,7 +102,7 @@ function GetMyQoutes() {
         ) : (
           <div className="px-3 mt-10">
             <QuoteTable
-              data={quotes}
+              data={data}
               page={page}
               setPage={handlePageChange}
               onLimitChange={handleLimitChange}

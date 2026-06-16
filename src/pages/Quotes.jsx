@@ -1,29 +1,20 @@
-import SearchBar from "../../components/common-component/SearchBar.jsx";
-import Filter from "../../components/common-component/Filter.jsx";
-import QuotesList from "../../components/QuoteList.jsx";
-import { getAllQuotes } from "../../api/quote.api.js";
-import Spinner from "../../components/common-component/Spinner.jsx";
-import { TAGS } from "../../constants/tags.js";
+import SearchBar from "../components/common-component/SearchBar.jsx";
+import Filter from "../components/common-component/Filter.jsx";
+import QuotesList from "../components/QuoteList.jsx";
+import { getAllQuotes } from "../api/quote.api.js";
+import Spinner from "../components/common-component/Spinner.jsx";
+import { TAGS } from "../constants/tags.js";
 import { useSearchParams } from "react-router";
 import { useEffect } from "react";
 import { useRef } from "react";
 import useSWRInfinite from "swr/infinite";
 
 function Quotes() {
-  // const [quotes, setQuotes] = useState([]);
-  // const [isLoading, setIsLoding] = useState(false);
-  // const [error, setIsError] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-  // const [page, setPage] = useState(1);
 
   const tags = searchParams.get("tags") || "";
   const selectedTag = searchParams.get("tags") || "ALL";
   const search = searchParams.get("search") || "";
-
-  // const filters = {
-  //   ...(tags && { tags }),
-  //   ...(search && { search }),
-  // };
 
   const getKey = (pageIndex, previousPageData) => {
     if (
@@ -36,13 +27,13 @@ function Quotes() {
     return ["quotes", pageIndex + 1, tags, search];
   };
 
-  const { data, error, isLoading, size, setSize, isValidating } =
-    useSWRInfinite(getKey, ([, page, tags, search]) =>
-      getAllQuotes({ page, tags, search }),
-    );
+  const { data, error, isLoading, setSize, isValidating } = useSWRInfinite(
+    getKey,
+    ([, page, tags, search]) => getAllQuotes({ page, tags, search }),
+  );
 
   const quotes = data?.flatMap((page) => page?.quotes) || [];
-  console.log(quotes);
+  // console.log(quotes);
 
   const lastPage = data?.[data.length - 1];
   const hasMore =
@@ -72,7 +63,11 @@ function Quotes() {
   }, [hasMore, isValidating, setSize]);
 
   if (error) {
-    return <p className="text-red-500 text-center">{error.message}</p>;
+    return (
+      <p className="text-red-500 text-center">
+        {error.response?.data?.message}
+      </p>
+    );
   }
 
   if (isLoading) {

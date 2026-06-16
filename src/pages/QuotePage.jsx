@@ -1,46 +1,48 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { FaHeart, FaBookmark, FaShare } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { getQuoteByAuthor, getQuoteById } from "../../api/quote.api";
-import QuotesList from "../../components/QuoteList";
+import { getQuoteByAuthor, getQuoteById } from "../api/quote.api";
+import QuotesList from "../components/QuoteList";
+import useSWR from "swr";
+import Spinner from "../components/common-component/Spinner";
 
 function QuotePage() {
   const { id } = useParams();
 
-  const [quote, setQuote] = useState(null);
-  const [authorQuotes, setAuthorQuotes] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    data: quote,
+    error: quoteError,
+    isLoading: quoteIsLoading,
+  } = useSWR(id ? ["quotes", id] : null, () => getQuoteById(id));
 
-  const fetchData = async (id) => {
-    try {
-      setLoading(true);
+  const {
+    data: authorQuotes,
+    error: authorQuotesError,
+    isLoading: authorQuotesIsLoading,
+  } = useSWR(
+    quote?.submittedBy?._id ? ["author-quotes", quote?.submittedBy?._id] : null,
+    () => getQuoteByAuthor(quote?.submittedBy?._id),
+  );
 
-      const res = await getQuoteById(id);
-      setQuote(res.data);
-      console.log(res.data);
+  const authorFilterQuotes =
+    authorQuotes?.data?.quotes?.filter((q) => q._id !== id) || [];
 
-      const authorRes = await getQuoteByAuthor(res?.data?.submittedBy?._id);
-      console.log(authorRes);
-      const filteredQuote = authorRes.data.quotes.filter((q) => q._id !== id);
-      setAuthorQuotes(filteredQuote || []);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData(id);
-  }, [id]);
-
-  if (loading) {
+  if (quoteIsLoading) {
     return (
       <div className="min-h-screen   p-10 animate-pulse">
         <div className="h-40 bg-gray-800 rounded-xl mb-6"></div>
         <div className="h-20 bg-gray-800 rounded-xl mb-4"></div>
         <div className="h-10 bg-gray-800 rounded-xl"></div>
+      </div>
+    );
+  }
+
+  if (quoteError) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <p className="text-2xl font-bold text-red-400">
+          {quoteError?.response?.data?.message}
+        </p>
       </div>
     );
   }
@@ -104,7 +106,21 @@ function QuotePage() {
         </h2>
 
         <div className="">
-          <QuotesList quotes={authorQuotes} />
+          {authorQuotesIsLoading ? (
+            <>
+              <div className="flex items-center justify-center h-[80vh] ">
+                <Spinner />
+              </div>
+            </>
+          ) : authorQuotesError ? (
+            <div className="h-100 flex justify-center items-center">
+              <p className="text-2xl font-bold text-red-400">
+                {authorQuotesError?.response?.data?.message}
+              </p>
+            </div>
+          ) : (
+            <QuotesList quotes={authorFilterQuotes} />
+          )}
         </div>
       </div>
     </div>

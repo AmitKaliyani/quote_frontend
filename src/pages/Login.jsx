@@ -1,56 +1,55 @@
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signupSchema } from "../../validators/auth.validation-schema";
-import { signupUser } from "../../api/auth.api";
+import { loginSchema } from "../validators/auth.validation-schema";
+import { loginUser } from "../api/auth.api";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/slices/authSlice";
+import { useState } from "react";
+// import toast from "react-hot-toast";
 
-export default function SignUp() {
+export default function Login() {
+  const dispatch = useDispatch();
+  const location = useLocation();
   const navigate = useNavigate();
 
-  // const [seenPassword,setSeenPassword] = useState(true)
-  // const [apiError, setApiError] = useState("");
+  const from = location.state?.from?.pathname || "/";
+
+  const [apiError, setApiError] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm({ resolver: zodResolver(signupSchema) });
+  } = useForm({ resolver: zodResolver(loginSchema) });
 
   const onSubmit = async (data) => {
-    try {
-      // setApiError("");
-      await signupUser(data);
-      reset();
-      navigate("/login");
-    } catch (error) {
-      console.log(error);
+    // console.log(data);
 
-      // setApiError(error?.response?.data?.message);
+    try {
+      // api call
+      setApiError("");
+      const user = await loginUser(data);
+      // console.log(user);
+      dispatch(setUser(user.data));
+      reset();
+      navigate(from, { replace: true });
+    } catch (error) {
+      // console.log(error);
+      setApiError(error.response.data.message);
+      // toast.error(error?.response?.data?.message);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-900 via-purple-900 to-black px-4">
       <div className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl p-8 text-white">
-        <h2 className="text-3xl font-bold text-center mb-2">
-          Create Account 🚀
-        </h2>
+        <h2 className="text-3xl font-bold text-center mb-2">Welcome Back 👋</h2>
         <p className="text-center text-sm text-gray-300 mb-6">
-          Signup and start exploring
+          Login to continue your journey
         </p>
 
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label className="text-sm text-gray-300">Name</label>
-            <input
-              type="text"
-              placeholder="Enter your name"
-              {...register("name")}
-              className="w-full mt-1 p-3 rounded-lg bg-white/10 border border-white/20 outline-none focus:ring-2 focus:ring-purple-500"
-            />
-            <p className="text-red-400 text-sm">{errors.name?.message}</p>
-          </div>
-
           <div>
             <label className="text-sm text-gray-300">Email</label>
             <input
@@ -65,33 +64,35 @@ export default function SignUp() {
           <div>
             <label className="text-sm text-gray-300">Password</label>
             <input
-              // type={seenPassword ? "password": "text"}
               type="password"
               placeholder="Enter your password"
               {...register("password")}
               className="w-full mt-1 p-3 rounded-lg bg-white/10 border border-white/20 outline-none focus:ring-2 focus:ring-purple-500"
             />
-            <p className="text-red-400 text-sm">{errors.pasword?.message}</p>
+            <p className="text-red-400 text-sm">{errors.password?.message}</p>
           </div>
+
+          <p className="text-red-400 text-sm">{apiError}</p>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3 mt-2 rounded-lg bg-purple-600 hover:bg-purple-700 transition font-semibold shadow-lg flex justify-center items-center"
+            className="w-full py-3 cursor-pointer mt-2 rounded-lg bg-purple-600 hover:bg-purple-700 transition font-semibold shadow-lg flex justify-center items-center"
           >
             {isSubmitting ? (
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin "></div>
             ) : (
-              "SignUp"
+              "Login"
             )}
           </button>
         </form>
+
         <p className="text-center text-sm text-gray-300 mt-6">
-          Already have an account?
+          Don't have an account?
           <button
-            className="text-purple-400 hover:underline font-medium"
-            onClick={() => navigate("/login")}
+            className="text-purple-400 hover:underline font-medium cursor-pointer"
+            onClick={() => navigate("/signup")}
           >
-            Login
+            Signup
           </button>
         </p>
       </div>
