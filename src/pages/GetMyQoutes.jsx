@@ -78,7 +78,8 @@ function GetMyQoutes() {
   if (error) {
     return (
       <p className="min-h-screen flex justify-center items-center text-red-600 text-lg ">
-        {error?.response?.data?.message}
+        {error?.response?.data?.message ||
+          (error.message && "Server is unavailable. Please try again later.")}
       </p>
     );
   }

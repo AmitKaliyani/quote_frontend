@@ -17,7 +17,7 @@ function SavedQuotes() {
     mutate,
   } = useSWR("saved-quotes", getMySavedQuote);
 
-  console.log(error);
+  // console.log(error);
 
   // console.log(quotes, error, isLoading);
 
@@ -34,7 +34,8 @@ function SavedQuotes() {
   if (error) {
     return (
       <p className="text-red-500 text-center">
-        {error?.response?.data?.message}
+        {error?.response?.data?.message ||
+          (error.message && "Server is unavailable. Please try again later.")}
       </p>
     );
   }

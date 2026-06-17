@@ -41,7 +41,9 @@ function QuotePage() {
     return (
       <div className="min-h-screen flex justify-center items-center">
         <p className="text-2xl font-bold text-red-400">
-          {quoteError?.response?.data?.message}
+          {quoteError?.response?.data?.message ||
+            (quoteError?.message &&
+              "Server is unavailable. Please try again later.")}
         </p>
       </div>
     );
@@ -115,7 +117,9 @@ function QuotePage() {
           ) : authorQuotesError ? (
             <div className="h-100 flex justify-center items-center">
               <p className="text-2xl font-bold text-red-400">
-                {authorQuotesError?.response?.data?.message}
+                {authorQuotesError?.response?.data?.message ||
+                  (authorQuotesError?.message &&
+                    "Server is unavailable. Please try again later.")}
               </p>
             </div>
           ) : (

@@ -64,9 +64,12 @@ function Quotes() {
 
   if (error) {
     return (
-      <p className="text-red-500 text-center">
-        {error.response?.data?.message}
-      </p>
+      <div className="h-70 flex justify-center items-center">
+        <p className="text-red-500 text-center">
+          {error.response?.data?.message ||
+            (error.message && "Server is unavailable. Please try again later.")}
+        </p>
+      </div>
     );
   }
 

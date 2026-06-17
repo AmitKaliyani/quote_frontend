@@ -29,8 +29,8 @@ function TrendingQuote() {
           {/* Grid */}
           <div className="grid md:grid-cols-3 gap-6">
             {error ? (
-              <h2 className="text-slate-900">
-                {error?.response?.data?.message}
+              <h2 className="text-slate-900 text-center">
+                {error?.response?.data?.message || error?.message}
               </h2>
             ) : (
               data?.map((quote, index) => (
