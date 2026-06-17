@@ -130,9 +130,8 @@ function Navbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ${
-          isOpen ? "max-h-96 border-t border-purple-500/20" : "max-h-0"
-        }`}
+        className={`md:hidden overflow-hidden transition-all duration-300 ${isOpen ? "max-h-96 border-t border-purple-500/20" : "max-h-0"
+          }`}
       >
         <div className="bg-slate-900/95 backdrop-blur-md px-4 py-4 space-y-2">
           <Link

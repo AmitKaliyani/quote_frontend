@@ -113,9 +113,8 @@ function QuoteCard({ quote, onUnsave }) {
             className="flex flex-col items-center"
           >
             <FaHeart
-              className={`transition cursor-pointer ${
-                isLiked ? "text-pink-500" : "text-gray-500"
-              }`}
+              className={`transition cursor-pointer ${isLiked ? "text-pink-500" : "text-gray-500"
+                }`}
             />
             <p className="text-xs">{likeCount}</p>
           </button>

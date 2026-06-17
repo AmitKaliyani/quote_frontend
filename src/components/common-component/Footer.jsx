@@ -64,8 +64,7 @@ function Footer() {
               Join thousands of users sharing daily inspiration.
             </p>
 
-            <button
-             className=" cursor-pointer mt-2 px-6 py-3 rounded-xl bg-linear-to-r from-purple-600 to-violet-500 text-white font-semibold shadow-lg shadow-purple-500/30 hover:scale-105 transition">
+            <button className=" cursor-pointer mt-2 px-6 py-3 rounded-xl bg-linear-to-r from-purple-600 to-violet-500 text-white font-semibold shadow-lg shadow-purple-500/30 hover:scale-105 transition">
               Create Quote
             </button>
           </motion.div>

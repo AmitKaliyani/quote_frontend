@@ -55,13 +55,12 @@ function QuoteTable({
                 {/* Status */}
                 <td className="px-6 py-4">
                   <span
-                    className={`px-2 py-1 text-xs font-semibold rounded-full whitespace-nowrap ${
-                      quote.status === "approved"
+                    className={`px-2 py-1 text-xs font-semibold rounded-full whitespace-nowrap ${quote.status === "approved"
                         ? "bg-green-100 text-green-700"
                         : quote.status === "pending-review"
                           ? "bg-yellow-100 text-yellow-700"
                           : "bg-red-100 text-red-700"
-                    }`}
+                      }`}
                   >
                     {quote.status}
                   </span>

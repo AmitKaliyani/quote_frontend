@@ -21,7 +21,7 @@ const features = [
 function Features() {
   return (
     <section className="py-20 px-6 max-w-7xl mx-auto">
-      
+
       {/* Heading */}
       <motion.h2
         initial={{ opacity: 0, y: 30 }}

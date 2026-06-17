@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 
 function HeroSection() {
-    const navigate  = useNavigate()
+  const navigate = useNavigate()
   return (
     <section className="relative overflow-hidden min-h-[90vh] flex items-center justify-center pb-3">
-      
+
       {/* Background Glow Effects */}
       <motion.div
         animate={{ scale: [1, 1.2, 1] }}
@@ -66,7 +66,7 @@ function HeroSection() {
               className="mt-10 flex flex-wrap gap-4"
             >
               <motion.button
-              onClick={() => navigate('/quotes')}
+                onClick={() => navigate('/quotes')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-4 rounded-xl bg-linear-to-r from-purple-600 to-violet-500 text-white font-semibold shadow-xl shadow-purple-500/30 cursor-pointer"
