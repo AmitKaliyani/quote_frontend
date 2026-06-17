@@ -1,5 +1,5 @@
 import { useState } from "react";
-import QuoteTable from "../components/common-component/Quotetable";
+import QuoteTable from "../components/common-component/QuoteTable";
 import { deleteQuote, getMyQuotes } from "../api/quote.api";
 import Spinner from "../components/common-component/Spinner";
 import { useSearchParams } from "react-router";
