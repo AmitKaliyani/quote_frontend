@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 function HeroSection() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const isLoggedIn = useSelector((state) => state.auth.isAuthenticated);
   return (
     <section className="relative overflow-hidden min-h-[90vh] flex items-center justify-center pb-3">
-
-      {/* Background Glow Effects */}
       <motion.div
         animate={{ scale: [1, 1.2, 1] }}
         transition={{ duration: 8, repeat: Infinity }}
@@ -21,8 +21,6 @@ function HeroSection() {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-
-          {/* LEFT SIDE */}
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             animate={{ opacity: 1, x: 0 }}
@@ -33,7 +31,6 @@ function HeroSection() {
               ✨ Inspirational Quotes Platform
             </span>
 
-            {/* Heading */}
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -47,7 +44,6 @@ function HeroSection() {
               </span>
             </motion.h1>
 
-            {/* Paragraph */}
             <motion.p
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -58,7 +54,6 @@ function HeroSection() {
               Save your favorites and share your own wisdom with the world.
             </motion.p>
 
-            {/* Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -66,7 +61,7 @@ function HeroSection() {
               className="mt-10 flex flex-wrap gap-4"
             >
               <motion.button
-                onClick={() => navigate('/quotes')}
+                onClick={() => navigate("/quotes")}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-4 rounded-xl bg-linear-to-r from-purple-600 to-violet-500 text-white font-semibold shadow-xl shadow-purple-500/30 cursor-pointer"
@@ -77,6 +72,7 @@ function HeroSection() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => isLoggedIn && navigate("/my-quotes")}
                 className="px-8 py-4 rounded-xl border border-purple-500 text-purple-300 hover:bg-purple-500/10 cursor-pointer"
               >
                 Create Quote
@@ -90,7 +86,6 @@ function HeroSection() {
             transition={{ duration: 1, delay: 0.3 }}
             className="relative space-y-6"
           >
-
             {/* Card 1 */}
             <motion.div
               animate={{ y: [0, -10, 0] }}
@@ -98,7 +93,8 @@ function HeroSection() {
               className=" backdrop-blur-md border border-purple-500/20 p-6 rounded-3xl"
             >
               <p className="text-xl  italic">
-                "Success is not final, failure is not fatal: it is the courage to continue that counts."
+                "Success is not final, failure is not fatal: it is the courage
+                to continue that counts."
               </p>
               <span className="text-purple-400 mt-4 block">
                 — Winston Churchill
@@ -132,7 +128,6 @@ function HeroSection() {
                 — Theodore Roosevelt
               </span>
             </motion.div>
-
           </motion.div>
         </div>
       </div>

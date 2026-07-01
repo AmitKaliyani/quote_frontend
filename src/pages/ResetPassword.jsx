@@ -1,27 +1,25 @@
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "../validators/auth.validation-schema";
-import { loginUser } from "../api/auth.api";
-import { useDispatch } from "react-redux";
-import { setUser } from "../redux/slices/authSlice";
+
 import { useState } from "react";
+import { resetPassword } from "../api/auth.api";
+import toast from "react-hot-toast";
+import { resetPasswordSchema } from "../validators/auth.validation-schema";
 // import toast from "react-hot-toast";
 
-export default function Login() {
-  const dispatch = useDispatch();
-  const location = useLocation();
+export default function ResetPassword() {
   const navigate = useNavigate();
 
-  const from = location.state?.from || "/";
-
   const [apiError, setApiError] = useState("");
+  const { token } = useParams();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm({ resolver: zodResolver(loginSchema) });
+  } = useForm({ resolver: zodResolver(resetPasswordSchema) });
 
   const onSubmit = async (data) => {
     // console.log(data);
@@ -29,38 +27,25 @@ export default function Login() {
     try {
       // api call
       setApiError("");
-      const user = await loginUser(data);
-      // console.log(user);
-      dispatch(setUser(user.data));
+      await resetPassword(token, data);
       reset();
-      navigate(from, { replace: true });
+      navigate("login");
     } catch (error) {
       // console.log(error);
-      setApiError(error.response.data.message);
-      // toast.error(error?.response?.data?.message);
+      //   setApiError(error.response.data.message);
+      toast.error(error?.response?.data?.message);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-900 via-purple-900 to-black px-4">
       <div className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl p-8 text-white">
-        <h2 className="text-3xl font-bold text-center mb-2">Welcome Back 👋</h2>
+        <h2 className="text-3xl font-bold text-center mb-2">Reset Password</h2>
         <p className="text-center text-sm text-gray-300 mb-6">
-          Login to continue your journey
+          Reset your password.
         </p>
 
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label className="text-sm text-gray-300">Email</label>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              {...register("email")}
-              className="w-full mt-1 p-3 rounded-lg bg-white/10 border border-white/20 outline-none focus:ring-2 focus:ring-purple-500"
-            />
-            <p className="text-red-400 text-sm">{errors.email?.message}</p>
-          </div>
-
           <div>
             <label className="text-sm text-gray-300">Password</label>
             <input
@@ -72,7 +57,6 @@ export default function Login() {
             <p className="text-red-400 text-sm">{errors.password?.message}</p>
           </div>
 
-          <p className="text-red-400 text-sm">{apiError}</p>
           <button
             type="submit"
             disabled={isSubmitting}
@@ -81,26 +65,18 @@ export default function Login() {
             {isSubmitting ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin "></div>
             ) : (
-              "Login"
+              "Reset Password"
             )}
           </button>
         </form>
-        <button
-          onClick={() => navigate("/forgot-password")}
-          className="text-red-500 font-bold text-xs mt-1 cursor-pointer"
-        >
-          Forget password ?{" "}
-        </button>
+        <p className="text-red-400 text-sm">{apiError}</p>
 
-        <p className="text-center text-sm text-gray-300 mt-6">
-          Don't have an account?
-          <button
-            className="text-purple-400 hover:underline font-medium cursor-pointer"
-            onClick={() => navigate("/signup")}
-          >
-            Signup
-          </button>
-        </p>
+        <button
+          className="text-white mt-2 hover:underline font-medium cursor-pointer"
+          onClick={() => navigate("/login")}
+        >
+          Back to Login
+        </button>
       </div>
     </div>
   );

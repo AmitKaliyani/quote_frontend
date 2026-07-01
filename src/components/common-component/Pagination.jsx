@@ -18,7 +18,7 @@ function Pagination({ currentPage, totalPages, setPage, setLimit, limit }) {
         {/* Info */}
         <p className="text-sm text-gray-600 text-center lg:text-left">
           Page <span className="font-semibold">{currentPage}</span> of{" "}
-          <span className="font-semibold">{totalPages}</span>
+          <span className="font-semibold">{totalPages || 1}</span>
         </p>
 
         {/* Controls */}
@@ -26,7 +26,7 @@ function Pagination({ currentPage, totalPages, setPage, setLimit, limit }) {
           {/* Pagination Buttons */}
           <div className="flex items-center gap-1 flex-wrap justify-center">
             <button
-              disabled={currentPage === 1}
+              disabled={currentPage <= 1}
               onClick={() => setPage(currentPage - 1)}
               className="px-3 py-2 text-sm rounded-md border hover:bg-gray-100 disabled:opacity-40"
             >
@@ -48,7 +48,7 @@ function Pagination({ currentPage, totalPages, setPage, setLimit, limit }) {
             ))}
 
             <button
-              disabled={currentPage === totalPages}
+              disabled={currentPage >= totalPages}
               onClick={() => setPage(currentPage + 1)}
               className="px-3 py-2 text-sm rounded-md border hover:bg-gray-100 disabled:opacity-40"
             >

@@ -119,6 +119,7 @@ function GetMyQoutes() {
         setIsOpen={setIsOpen}
         quote={quote}
         setQuote={setQuote}
+        mutate={mutate}
       />
       <DeleteModal
         isOpen={deleteModalOpen}

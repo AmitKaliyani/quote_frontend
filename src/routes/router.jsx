@@ -15,12 +15,16 @@ import ProfilePage from "../pages/ProfilePage";
 import QuotePage from "../pages/QuotePage";
 import SavedQuotes from "../pages/SavedQuotes";
 import NotFound from "../pages/NotFound";
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
 
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
@@ -29,10 +33,10 @@ const router = createBrowserRouter(
         <Route path="/quotes/:id" element={<QuotePage />} />
         <Route element={<UserProtectedRoute />}>
           <Route path="/my-quotes" element={<GetMyQoutes />} />
-          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/saved-quotes" element={<SavedQuotes />} />
         </Route>
       </Route>
+      <Route path="/profile" element={<ProfilePage />} />
 
       <Route path="*" element={<NotFound />} />
     </>,

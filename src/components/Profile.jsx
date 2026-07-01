@@ -25,7 +25,10 @@ export default function Profile({ open, handleLogout, setOpen }) {
       {open && (
         <div className="absolute right-3 mt-2 w-52 bg-white/95 backdrop-blur-md border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden">
           {/* Profile */}
-          <button className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition cursor-pointer">
+          <button
+            className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition cursor-pointer"
+            onClick={() => navigate("/profile")}
+          >
             <FaUser className="text-gray-500" />
             Profile
           </button>

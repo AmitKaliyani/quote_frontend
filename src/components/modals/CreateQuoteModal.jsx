@@ -9,7 +9,7 @@ import { createQuote, updateQuote } from "../../api/quote.api";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 
-function CreateQuoteModals({ isOpen, setIsOpen, quote, setQuote }) {
+function CreateQuoteModals({ isOpen, setIsOpen, quote, setQuote, mutate }) {
   const {
     register,
     control,
@@ -32,6 +32,7 @@ function CreateQuoteModals({ isOpen, setIsOpen, quote, setQuote }) {
       toast.success(`Quote ${quote ? "updated" : "created"} succesfully}`);
       setQuote(null);
       setIsOpen(false);
+      await mutate();
       reset();
     } catch (error) {
       console.log(error);

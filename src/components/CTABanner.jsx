@@ -1,17 +1,19 @@
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 function CTABanner() {
+  const user = useSelector((state) => state.auth.isAuthenticated);
+  // console.log(user);
+
   return (
     <section className="py-20 px-6 relative flex justify-center overflow-hidden">
-      {/* Glow Background */}
       <motion.div
         animate={{ scale: [1, 1.2, 1] }}
         transition={{ duration: 6, repeat: Infinity }}
         className="absolute w-96 h-96 bg-purple-600/20 rounded-full blur-3xl"
       />
 
-      {/* Glass Container */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -22,7 +24,6 @@ function CTABanner() {
                    border border-purple-500/20 
                    rounded-3xl p-12 shadow-2xl"
       >
-        {/* Badge */}
         <motion.span
           initial={{ opacity: 0, y: -10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -79,10 +80,12 @@ function CTABanner() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 rounded-xl 
+              className={`px-8 py-4 rounded-xl 
                          border border-purple-500 
                          text-purple-300 
-                         hover:bg-purple-500/10 cursor-pointer"
+                         hover:bg-purple-500/10 cursor-pointer
+                         ${user ? "hidden" : ""}
+                         `}
             >
               Create Account
             </motion.button>
