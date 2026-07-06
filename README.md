@@ -1,16 +1,74 @@
-# React + Vite
+# 🚀 Installation & Setup
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Prerequisites
 
-Currently, two official plugins are available:
+Before running the application, ensure the following are installed:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js (v18 or later)
+- pnpm (v9 or later)
+- Git
 
-## React Compiler
+> **Note:** This application requires the Quotes Hub Backend API to be running.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 1. Clone the Repository
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+https://github.com/AmitKaliyani/quote_frontend.git
+```
+
+---
+
+## 2. Install Dependencies
+
+```bash
+pnpm install
+```
+
+---
+
+## 3. Configure Environment Variables
+
+Create a `.env` file in the project root.
+
+```env
+VITE_BACKEND_BASE_URL=https://zero6-quote-backend.onrender.com/api
+```
+
+---
+
+## 4. Start the Development Server
+
+```bash
+pnpm run dev
+```
+
+The application will be available at
+
+```
+http://localhost:5173
+```
+
+---
+
+## Backend Requirement
+
+This frontend communicates with the Quotes Hub Backend API.
+
+Before running the frontend, make sure the backend server is running.
+
+Backend Repository:
+
+```
+https://github.com/AmitKaliyani/06_quote_backend.git
+```
+
+---
+
+## Related Repositories
+
+| Repository | Description |
+|------------|-------------|
+| Quotes Hub Backend | REST API & Business Logic |
+| Quotes Hub Admin | Admin Dashboard |
