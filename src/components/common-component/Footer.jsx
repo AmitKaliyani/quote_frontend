@@ -1,15 +1,14 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { motion } from "framer-motion";
 
 function Footer() {
+  const navigate = useNavigate();
   return (
     <footer className="relative mt-10 border-t border-purple-500/20 bg-purple-900 backdrop-blur-md ">
-      {/* Glow Effect */}
       <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-72 h-72 bg-purple-600/10 blur-3xl rounded-full" />
 
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {/* Brand Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -23,7 +22,6 @@ function Footer() {
             </p>
           </motion.div>
 
-          {/* Links */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -32,16 +30,22 @@ function Footer() {
           >
             <h2 className="text-white font-semibold text-lg">Quick Links</h2>
 
-            <div className="flex flex-col gap-2 text-slate-400">
+            <div className="flex flex-col gap-2 text-slate-400 ">
               <Link to="/" className="hover:text-purple-400 transition">
                 Home
               </Link>
 
-              <Link to="/quotes" className="hover:text-purple-400 transition">
+              <Link
+                to="/quotes"
+                className="hover:text-purple-400 transition cursor-pointer"
+              >
                 Quotes
               </Link>
 
-              <Link to="/signup" className="hover:text-purple-400 transition">
+              <Link
+                to="/signup"
+                className="hover:text-purple-400 transition cursor-pointer"
+              >
                 Signup
               </Link>
 
@@ -51,7 +55,6 @@ function Footer() {
             </div>
           </motion.div>
 
-          {/* CTA / Social */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -64,13 +67,15 @@ function Footer() {
               Join thousands of users sharing daily inspiration.
             </p>
 
-            <button className=" cursor-pointer mt-2 px-6 py-3 rounded-xl bg-linear-to-r from-purple-600 to-violet-500 text-white font-semibold shadow-lg shadow-purple-500/30 hover:scale-105 transition">
+            <button
+              onClick={() => navigate("/my-quotes")}
+              className=" cursor-pointer mt-2 px-6 py-3 rounded-xl bg-linear-to-r from-purple-600 to-violet-500 text-white font-semibold shadow-lg shadow-purple-500/30 hover:scale-105 transition"
+            >
               Create Quote
             </button>
           </motion.div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="mt-14 border-t border-purple-500/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-slate-500 text-sm text-center md:text-left">
             © {new Date().getFullYear()} QuoteHub. All rights reserved.
