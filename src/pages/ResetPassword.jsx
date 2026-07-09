@@ -29,7 +29,7 @@ export default function ResetPassword() {
       setApiError("");
       await resetPassword(token, data);
       reset();
-      navigate("login");
+      navigate("/login");
     } catch (error) {
       // console.log(error);
       //   setApiError(error.response.data.message);
